@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="./md5.min.js"></script>
+  <style>
+    .message {
+      position: fixed;
+      width: 100%;
+      height: 40px;
+      background: rgba(0, 0, 0, .8);
+      line-height: 43px;
+      text-align: center;
+      color: white;
+      transition: all .5s;
+      top: -40px;
+      z-index: 999;
+    }
+
+    .search {
+      margin-top: 20px;
+    }
+
+    table td {
+      text-align: center;
+    }
+
+    .table {
+      display: none;
+    }
+
+    #searchText {
+      width: 30%;
+      min-width: 200px;
+      display: inline-block;
+    }
+
+    .table>tbody>tr>td {
+      vertical-align: middle;
+    }
+
+    .btn {
+      margin-left: 20px;
+    }
+
+    .edit-form,
+    .login-form {
+      position: fixed;
+      background: rgba(0, 0, 0, .7);
+      width: 100vw;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      display: none;
+    }
+
+    .form {
+      width: 600px;
+      height: auto;
+      background: white;
+      border-radius: 10px;
+      padding: 60px 30px;
+    }
+
+    .header {
+      height: 80px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      background-color: #f8f8f8;
+      border: 1px solid #eeeeee;
+      padding: 0 40px;
+    }
+
+    .radio {
+      margin-left: 10px;
+    }
+
+    .loginInfo {
+      display: none;
+    }
+
+    .addUser {
+      padding: 20px;
+      display: none;
+    }
+
+    .haslogin {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="message"></div>
+  <div class="edit-form">
+    <div class="form">
+      <div class="form-group">
+        <label for="editNick">Nick:</label>
+        <input type="text" class="form-control" id="editNick" placeholder="Nick">
+      </div>
+      <div class="form-group">
+        <label for="editInfo">Info</label>
+        <input type="text" class="form-control" id="editInfo" placeholder="Info">
+      </div>
+      <button id="cancel" class="btn btn-default">取消</button>
+      <button id="editBtn" class="btn btn-primary">确认</button>
+    </div>
+  </div>
+  <div class="login-form">
+    <div class="form">
+      <div class="form-group">
+        <label for="editNick">账户：</label>
+        <input type="text" class="form-control" id="loginname" placeholder="账户">
+      </div>
+      <div class="form-group">
+        <label for="editInfo">密码：</label>
+        <input type="password" class="form-control" id="password" placeholder="密码">
+      </div>
+      <div class="loginInfo">
+        <div class="form-group">
+          <label for="editInfo">确认密码：</label>
+          <input type="password" class="form-control" id="confirmPassword" placeholder="密码">
+        </div>
+        <div class="form-group">
+          <label for="editInfo">性别：</label>
+          <div class="radio">
+            <label>
+              <input type="radio" name="optionsRadios" id="man" value="man" checked>
+                男
+              </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="optionsRadios" id="women" value="women">
+                女
+              </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="editNick">座右铭：</label>
+          <input type="text" class="form-control" id="motto" placeholder="座右铭">
+        </div>
+        <div class="form-group">
+          <label for="editNick">爱好</label>
+          <input type="text" class="form-control" id="interest" placeholder="爱好">
+        </div>
+      </div>
+      <button id="login" class="btn btn-info">确定</button>
+      <button id="cancelLogin" class="btn btn-warning">取消</button>
+    </div>
+  </div>
+  <div class="header">
+    <div class="notlogin">
+      <button id="registerBtn" class="btn btn-primary">注册</button>
+      <button id="loginBtn" class="btn btn-info">登陆</button>
+    </div>
+    <div class="haslogin">
+      <span class="showname"></span>
+      <button id="signout" class="btn btn-info">退出</button>
+    </div>
+  </div>
+  <div class="addUser">
+    <div class="form-group">
+      <label for="name">UserName:</label>
+      <input type="text" class="form-control" id="name" placeholder="UserName">
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" placeholder="Email">
+    </div>
+    <div class="form-group">
+      <label for="nick">Nick:</label>
+      <input type="text" class="form-control" id="nick" placeholder="Nick">
+    </div>
+    <div class="form-group">
+      <label for="Info">Info</label>
+      <input type="text" class="form-control" id="Info" placeholder="Info">
+    </div>
+    <button id="submit" class="btn btn-default">Add</button>
+  </div>
+  <div class="search">
+    <input type="text" class="form-control" id="searchText" placeholder="请输入关键字">
+    <button id="search" class="btn btn-primary">Search</button>
+  </div>
+  <table class="table table-hover table-striped">
+    <thead>
+      <tr>
+        <td>#id</td>
+        <td>姓名</td>
+        <td>邮箱</td>
+        <td>外号</td>
+        <td>信息</td>
+        <td>操作</td>
+      </tr>
+    </thead>
+    <tbody id="user-info">
+    </tbody>
+  </table>
+  <script>
+    const $ = (attr) => document.querySelector(attr);
+    const server = {
+      get(url, query = {}) {
+        return axios.get(url, {
+          params: query,
+        });
+      },
+      post(url, body) {
+        return axios.post(url, body);
+      },
+      delete(url, id) {
+        return axios.delete(url, {
+          params: id,
+        });
+      },
+      put(url, body) {
+        return axios.put(url, body);
+      },
+    };
+  </script>
+  <script src="./fetch.js"></script>
+</body>
+
+</html>
