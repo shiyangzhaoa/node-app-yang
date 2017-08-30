@@ -5,4 +5,4 @@
 <code>npm start</code></br>
 数据库的配置在config.js里面,开启服务后直接打开static里面的html文件
 用了koa-cors，所以直接打开html文件就好了。</br>
-厨师简历数据结构执行<code>node init.js</code>
+初始建立数据结构执行<code>node init.js</code>
