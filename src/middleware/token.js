@@ -18,7 +18,7 @@ const resolveToken = async function (ctx, next) {
     try {
       const result = await getVerify(token);
       ctx.api_user = result;
-      return next();
+      await next();
     } catch(e) {
       ctx.status = 401;
       ctx.body = {
